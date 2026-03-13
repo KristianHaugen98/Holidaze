@@ -1,0 +1,4 @@
+function Login() {
+  return <div>Comming soon...</div>;
+}
+export default Login;
