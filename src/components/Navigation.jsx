@@ -2,27 +2,21 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 export default function Navigation() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const closeMenu = () => setIsOpen(false);
+  const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-900 text-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="text-2xl font-bold">
+    <nav className="bg-gray-900 text-white w-full">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <div className="text-xl font-bold">
             <NavLink to="/">Holidaze</NavLink>
           </div>
 
-          {/* Desktop */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex md:items-center md:gap-6">
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive
-                  ? "text-white font-medium"
-                  : "hover:text-gray-300 transition"
+                isActive ? "text-white font-semibold" : "hover:text-gray-300"
               }
             >
               Home
@@ -30,19 +24,15 @@ export default function Navigation() {
             <NavLink
               to="/about"
               className={({ isActive }) =>
-                isActive
-                  ? "text-white font-medium"
-                  : "hover:text-gray-300 transition"
+                isActive ? "text-white font-semibold" : "hover:text-gray-300"
               }
             >
-              About us
+              About
             </NavLink>
             <NavLink
               to="/contact"
               className={({ isActive }) =>
-                isActive
-                  ? "text-white font-medium"
-                  : "hover:text-gray-300 transition"
+                isActive ? "text-white font-semibold" : "hover:text-gray-300"
               }
             >
               Contact
@@ -50,9 +40,7 @@ export default function Navigation() {
             <NavLink
               to="/register"
               className={({ isActive }) =>
-                isActive
-                  ? "text-white font-medium"
-                  : "hover:text-gray-300 transition"
+                isActive ? "text-white font-semibold" : "hover:text-gray-300"
               }
             >
               Register
@@ -60,28 +48,29 @@ export default function Navigation() {
             <NavLink
               to="/login"
               className={({ isActive }) =>
-                isActive
-                  ? "text-white font-medium"
-                  : "hover:text-gray-300 transition"
+                isActive ? "text-white font-semibold" : "hover:text-gray-300"
               }
             >
               Login
             </NavLink>
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive ? "text-white font-semibold" : "hover:text-gray-300"
+              }
+            >
+              Profile
+            </NavLink>
           </div>
 
-          {/* Hamburger */}
-          <button
-            className="md:hidden p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-white"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
+          <button className="md:hidden p-2" onClick={() => setOpen(!open)}>
             <svg
               className="h-6 w-6"
               fill="none"
-              viewBox="0 0 24 24"
               stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              {isOpen ? (
+              {open ? (
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -101,54 +90,62 @@ export default function Navigation() {
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {isOpen && (
-        <div className="md:hidden border-t border-gray-800">
-          <div className="px-2 pt-2 pb-3 space-y-1">
+      {open && (
+        <div className="md:hidden border-t border-gray-800 bg-gray-900">
+          <div className="px-4 py-3 space-y-2">
             <NavLink
               to="/"
-              onClick={closeMenu}
               className={({ isActive }) =>
-                `block px-3 py-2 rounded-md ${isActive ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`
+                `block py-2 ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
               }
+              onClick={() => setOpen(false)}
             >
               Home
             </NavLink>
             <NavLink
               to="/about"
-              onClick={closeMenu}
               className={({ isActive }) =>
-                `block px-3 py-2 rounded-md ${isActive ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`
+                `block py-2 ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
               }
+              onClick={() => setOpen(false)}
             >
-              About us
+              About
             </NavLink>
             <NavLink
               to="/contact"
-              onClick={closeMenu}
               className={({ isActive }) =>
-                `block px-3 py-2 rounded-md ${isActive ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`
+                `block py-2 ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
               }
+              onClick={() => setOpen(false)}
             >
               Contact
             </NavLink>
             <NavLink
               to="/register"
-              onClick={closeMenu}
               className={({ isActive }) =>
-                `block px-3 py-2 rounded-md ${isActive ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`
+                `block py-2 ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
               }
+              onClick={() => setOpen(false)}
             >
               Register
             </NavLink>
             <NavLink
               to="/login"
-              onClick={closeMenu}
               className={({ isActive }) =>
-                `block px-3 py-2 rounded-md ${isActive ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`
+                `block py-2 ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
               }
+              onClick={() => setOpen(false)}
             >
               Login
+            </NavLink>
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                `block py-2 ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
+              }
+              onClick={() => setOpen(false)}
+            >
+              Profile
             </NavLink>
           </div>
         </div>

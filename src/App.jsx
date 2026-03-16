@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import "./App.css";
 // Importing Pages:
 
 import Home from "./pages/Home";
@@ -19,12 +18,11 @@ function App() {
     <BrowserRouter>
       <div className="min-h-screen flex flex-col">
         <Navigation />
-
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
