@@ -5,7 +5,7 @@ export default function Navigation() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-900 text-white w-full">
+    <nav className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="text-xl font-bold">

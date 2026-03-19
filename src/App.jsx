@@ -8,6 +8,7 @@ import Contact from "./pages/Contact";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import Search from "./components/Search";
 
 // Components:
 import Navigation from "./components/Navigation";
