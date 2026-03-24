@@ -83,7 +83,7 @@ const About = () => {
         </div>
       </section>
 
-      {/*  Call to Action */}
+      {/* Inspire to take action */}
       <section className="py-20 text-center px-4">
         <div className="max-w-3xl mx-auto bg-gradient-to-r from-blue-600 to-purple-600 p-12 rounded-3xl shadow-xl">
           <h2 className="text-3xl font-bold mb-4 text-white">
