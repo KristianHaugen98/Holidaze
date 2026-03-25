@@ -37,7 +37,7 @@ const About = () => {
             belief that where you stay is just as important as where you go.
           </p>
         </div>
-        <div className="rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+        <div className="rounded-2xl overflow-hidden shadow-2xl hover:rotate-1 transition-transform duration-500">
           <img
             src="/src/assets/images/interior design.jpg"
             alt="Interior of a home"
