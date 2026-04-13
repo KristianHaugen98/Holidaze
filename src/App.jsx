@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Importing Pages:
 
 import Home from "./pages/Home";
+import VenueDetail from "./pages/VenueDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Register from "./pages/Register";
@@ -21,6 +22,7 @@ function App() {
         <Navigation />
         <main className="flex-grow">
           <Routes>
+            <Route path="/venue/:id" element={<VenueDetail />} />
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
