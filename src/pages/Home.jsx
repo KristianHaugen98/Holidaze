@@ -32,7 +32,6 @@ function Home() {
 
         setProducts(json.data || []);
       } catch (err) {
-        console.error("Henting feilet:", err);
         setError(err.message);
       } finally {
         setLoading(false);
