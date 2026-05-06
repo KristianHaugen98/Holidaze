@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
+<<<<<<< Updated upstream
+=======
+  console.log("This card got:", product);
+>>>>>>> Stashed changes
   // Handling missing media data with optional chaining and fallback values
   const imageUrl = product.media?.[0]?.url || "https://via.placeholder.com";
   const imageAlt = product.media?.[0]?.alt || product.name;
