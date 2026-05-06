@@ -1,10 +1,4 @@
-import { Link } from "react-router-dom";
-
 function ProductCard({ product }) {
-<<<<<<< Updated upstream
-=======
-  console.log("This card got:", product);
->>>>>>> Stashed changes
   // Handling missing media data with optional chaining and fallback values
   const imageUrl = product.media?.[0]?.url || "https://via.placeholder.com";
   const imageAlt = product.media?.[0]?.alt || product.name;
@@ -39,13 +33,10 @@ function ProductCard({ product }) {
           </span>
         </div>
 
-        {/* See more details */}
-        <Link
-          to={`/venue/${product.id}`}
-          className="block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition"
-        >
-          View Details
-        </Link>
+        {/* Button */}
+        <button className="w-full py-2 text-sm font-semibold text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700">
+          Se detaljer
+        </button>
       </div>
     </div>
   );
