@@ -61,5 +61,5 @@ Holidaze is a modern front-end booking platform designed for effortless travel p
 
 ## 📝 Contact
 
-**Kristian** - [Ditt GitHub-brukernavn](https://github.com)
+**Kristian** - [KristianHaugen98](https://github.com/KristianHaugen98)
 Project Link: [https://github.com/holidaze](https://github.com/holidaze)

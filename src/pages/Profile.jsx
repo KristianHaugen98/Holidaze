@@ -27,6 +27,8 @@ function Profile() {
   const [newAvatarUrl, setNewAvatarUrl] = useState("");
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
 
+  const [showBookingsFor, setShowBookingsFor] = useState(null);
+
   const navigate = useNavigate();
   // Retrieves saved info from the browser (localStorage)
   const userData = JSON.parse(localStorage.getItem("user"));
@@ -347,17 +349,20 @@ function Profile() {
                   </div>
                 </div>
               ))}
+          </div>
 
-            {/* Showing venues for managers */}
-            {profile.venueManager &&
-              profile.venues?.map((venue) => (
-                <div
-                  key={venue.id}
-                  className="bg-gray-800/30 p-4 rounded-2xl border border-gray-700 flex items-center gap-4"
-                >
+          {/* Showing venues for managers */}
+          {profile.venueManager &&
+            profile.venues?.map((venue) => (
+              <div
+                key={venue.id}
+                className="bg-gray-800/30 p-4 rounded-2xl border border-gray-700 space-y-4"
+              >
+                <div className="flex items-center gap-4">
                   <img
                     src={venue.media?.[0]?.url || "https://placeholder.com"}
                     className="w-20 h-20 rounded-xl object-cover"
+                    alt={venue.name}
                   />
                   <div className="flex-1 flex justify-between items-center">
                     <div>
@@ -367,25 +372,70 @@ function Profile() {
                       </p>
                     </div>
                     <div className="flex gap-2">
+                      {/* Button to show/hide bookings for this venue */}
                       <button
-                        onClick={() => handleDeleteVenue(venue.id)}
-                        className="p-2 bg-red-900/20 text-red-500 rounded-lg hover:bg-red-900/40"
+                        onClick={() =>
+                          setShowBookingsFor(
+                            showBookingsFor === venue.id ? null : venue.id,
+                          )
+                        }
+                        className="p-2 bg-green-900/20 text-green-400 rounded-lg text-xs font-bold hover:bg-green-900/40 transition-colors"
                       >
-                        🗑️
+                        {venue.bookings?.length || 0} Bookings
                       </button>
-                      {/* Edit button, only shows when hovering the venue card */}
-
                       <button
                         onClick={() => setEditingVenue(venue)}
                         className="p-2 bg-blue-900/20 text-blue-400 rounded-lg hover:bg-blue-900/40"
                       >
                         ✎
                       </button>
+                      <button
+                        onClick={() => handleDeleteVenue(venue.id)}
+                        className="p-2 bg-red-900/20 text-red-500 rounded-lg hover:bg-red-900/40"
+                      >
+                        🗑️
+                      </button>
                     </div>
                   </div>
                 </div>
-              ))}
-          </div>
+
+                {/* Booking list for the selected venue */}
+                {showBookingsFor === venue.id && (
+                  <div className="mt-4 pt-4 border-t border-gray-700 animate-fadeIn">
+                    <h4 className="text-sm font-bold text-gray-300 mb-3">
+                      Recent Bookings:
+                    </h4>
+                    {venue.bookings && venue.bookings.length > 0 ? (
+                      <div className="space-y-2">
+                        {venue.bookings.map((b) => (
+                          <div
+                            key={b.id}
+                            className="text-xs bg-gray-900/50 p-3 rounded-xl border border-gray-700/50 flex justify-between items-center text-white"
+                          >
+                            <div>
+                              <p className="font-medium">
+                                {b.customer?.name || "Guest"}
+                              </p>
+                              <p className="text-gray-500">
+                                {new Date(b.dateFrom).toLocaleDateString()} -{" "}
+                                {new Date(b.dateTo).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <span className="text-blue-400 font-bold">
+                              {b.guests} guests
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-gray-500 italic">
+                        No bookings yet for this venue.
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
 
           {/* CREATE VENUE MODAL */}
           {editingVenue && (
