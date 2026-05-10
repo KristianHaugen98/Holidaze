@@ -1,11 +1,14 @@
+import React from "react";
+
+import { Link } from "react-router-dom";
+
+// ProductCard component to display individual product details in a card format
 function ProductCard({ product }) {
-  // Handling missing media data with optional chaining and fallback values
-  const imageUrl = product.media?.[0]?.url || "https://via.placeholder.com";
+  const imageUrl = product.media?.[0]?.url || "https://placeholder.com";
   const imageAlt = product.media?.[0]?.alt || product.name;
-  // Main render of the product card, using Tailwind CSS for styling
+
   return (
     <div className="flex flex-col h-full overflow-hidden bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-      {/* Image-holder */}
       <div className="relative h-48 w-full">
         <img
           src={imageUrl}
@@ -18,25 +21,26 @@ function ProductCard({ product }) {
         <h2 className="mb-2 text-xl font-bold text-gray-800 line-clamp-1">
           {product.name}
         </h2>
-        {/* Description */}
-        <p className="flex-grow mb-4 text-sm text-gray-600">
-          {product.description?.substring(0, 100)}...
+        <p className="flex-grow mb-4 text-sm text-gray-600 line-clamp-2">
+          {product.description}
         </p>
 
-        {/* Price and Rating */}
         <div className="flex items-center justify-between mb-4 text-sm font-medium">
           <span className="text-gray-900">
-            <span className="font-bold">{product.price}</span> kr / natt
+            <span className="font-bold">{product.price}</span> kr / Night
           </span>
           <span className="flex items-center text-yellow-500">
             ⭐ {product.rating}
           </span>
         </div>
 
-        {/* Button */}
-        <button className="w-full py-2 text-sm font-semibold text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700">
-          Se detaljer
-        </button>
+        {/* Link to product details */}
+        <Link
+          to={`/venue/${product.id}`}
+          className="w-full py-2 text-center text-sm font-semibold text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700"
+        >
+          See Details
+        </Link>
       </div>
     </div>
   );

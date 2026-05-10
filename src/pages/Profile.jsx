@@ -16,6 +16,9 @@ function Profile() {
     location: { address: "", city: "", zip: "", country: "" },
   });
 
+  // State for editing venues
+  const [editingVenue, setEditingVenue] = useState(null);
+
   // States
 
   const [profile, setProfile] = useState(null);
@@ -74,6 +77,48 @@ function Profile() {
     localStorage.clear();
     navigate("/login");
   };
+
+  // Function for sending data (PUT)
+  const handleUpdateVenue = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_REGISTER_URL}/holidaze/venues/${editingVenue.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "X-Noroff-API-Key": import.meta.env.VITE_API_KEY,
+          },
+          body: JSON.stringify({
+            name: editingVenue.name,
+            description: editingVenue.description,
+            price: editingVenue.price,
+            maxGuests: editingVenue.maxGuests,
+            media: editingVenue.media,
+            meta: editingVenue.meta,
+          }),
+        },
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+
+        setProfile((prev) => ({
+          ...prev,
+          venues: prev.venues.map((v) =>
+            v.id === editingVenue.id ? result.data : v,
+          ),
+        }));
+        setEditingVenue(null);
+        alert("Venue updated!");
+      }
+    } catch (error) {
+      console.error("Error updating venue:", error);
+    }
+  };
+
   // Handles vanue changes
   const handleVenueChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -321,87 +366,100 @@ function Profile() {
                         {venue.price} NOK / night
                       </p>
                     </div>
-                    <button
-                      onClick={() => handleDeleteVenue(venue.id)}
-                      className="p-2 bg-red-900/20 text-red-500 rounded-lg hover:bg-red-900/40"
-                    >
-                      🗑️
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleDeleteVenue(venue.id)}
+                        className="p-2 bg-red-900/20 text-red-500 rounded-lg hover:bg-red-900/40"
+                      >
+                        🗑️
+                      </button>
+                      {/* Edit button, only shows when hovering the venue card */}
+
+                      <button
+                        onClick={() => setEditingVenue(venue)}
+                        className="p-2 bg-blue-900/20 text-blue-400 rounded-lg hover:bg-blue-900/40"
+                      >
+                        ✎
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
           </div>
 
           {/* CREATE VENUE MODAL */}
-          {isCreatingVenue && (
+          {editingVenue && (
             <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
               <div className="bg-gray-800 border border-gray-700 w-full max-w-2xl p-8 rounded-3xl shadow-2xl relative my-auto">
                 <button
-                  onClick={() => setIsCreatingVenue(false)}
+                  onClick={() => setEditingVenue(null)}
                   className="absolute top-4 right-4 text-gray-400 hover:text-white"
                 >
                   ✕
                 </button>
-                <h2 className="text-2xl font-bold mb-6">Create New Venue</h2>
-                <form onSubmit={handleCreateVenue} className="space-y-4">
+                {/* Form for editing venue */}
+                <h2 className="text-2xl font-bold mb-6">Edit Venue</h2>
+                <form
+                  onSubmit={handleUpdateVenue}
+                  className="space-y-4 text-white"
+                >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input
-                      name="name"
-                      required
-                      placeholder="Venue Name"
-                      value={venueData.name}
-                      onChange={handleVenueChange}
-                      className="p-3 bg-gray-900 border border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <input
-                      name="price"
-                      type="number"
-                      required
-                      placeholder="Price per night"
-                      value={venueData.price}
-                      onChange={handleVenueChange}
-                      className="p-3 bg-gray-900 border border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <textarea
-                    name="description"
-                    required
-                    placeholder="Description"
-                    value={venueData.description}
-                    onChange={handleVenueChange}
-                    className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 h-24"
-                  />
-                  <input
-                    name="media"
-                    type="url"
-                    required
-                    placeholder="Image URL"
-                    value={venueData.media[0].url}
-                    onChange={handleVenueChange}
-                    className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 py-2">
-                    {["wifi", "parking", "breakfast", "pets"].map((item) => (
-                      <label
-                        key={item}
-                        className="flex items-center gap-2 cursor-pointer bg-gray-900/50 p-2 rounded-lg border border-gray-700/50 text-xs"
-                      >
-                        <input
-                          type="checkbox"
-                          name={`meta.${item}`}
-                          checked={venueData.meta[item]}
-                          onChange={handleVenueChange}
-                          className="accent-blue-500"
-                        />
-                        <span className="capitalize">{item}</span>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-xs text-gray-400 ml-1">
+                        Venue Name
                       </label>
-                    ))}
+                      <input
+                        required
+                        value={editingVenue.name}
+                        onChange={(e) =>
+                          setEditingVenue({
+                            ...editingVenue,
+                            name: e.target.value,
+                          })
+                        }
+                        className="p-3 bg-gray-900 border border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-xs text-gray-400 ml-1">
+                        Price per night
+                      </label>
+                      <input
+                        type="number"
+                        required
+                        value={editingVenue.price}
+                        onChange={(e) =>
+                          setEditingVenue({
+                            ...editingVenue,
+                            price: Number(e.target.value),
+                          })
+                        }
+                        className="p-3 bg-gray-900 border border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+                  {/* Description field outside the grid for better spacing */}
+                  <div className="flex flex-col gap-1">
+                    <label className="text-xs text-gray-400 ml-1">
+                      Description
+                    </label>
+                    <textarea
+                      required
+                      value={editingVenue.description}
+                      onChange={(e) =>
+                        setEditingVenue({
+                          ...editingVenue,
+                          description: e.target.value,
+                        })
+                      }
+                      className="p-3 bg-gray-900 border border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 h-24"
+                    />
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all"
+                    className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95 mt-4"
                   >
-                    Publish Venue
+                    Save Changes
                   </button>
                 </form>
               </div>
